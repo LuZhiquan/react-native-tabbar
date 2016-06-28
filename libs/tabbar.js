@@ -7,13 +7,24 @@ const REF_BAR = 'REF_BAR';
 
 //Tabbar
 export default class Tabbar extends Component {
+  onLayout = event => {
+    this.props.onLayout(event);
+    this.updateWidth(event); 
+  }
+
+  updateWidth = event => {
+    const { width } = event.nativeEvent.layout;
+    this.setState({ width: width });
+  }
+
   constructor(props, context) {
     super(props, context);
     this.prevContentRef = null;
     this.prevtabRef = null;
     this.state = {
       tabs: buildTabGraph(props.children),
-      activeTab: ''
+      activeTab: '',
+      width: null
     };
   }
 
@@ -96,13 +107,14 @@ export default class Tabbar extends Component {
   }
 
   render() {
-    const { BarComponent, barSize, barColor } = this.props;
+    const { BarComponent, barSize, barColor, onLayout } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} onLayout={this.onLayout.bind(this)}>
         {this.renderContents()}
         <BarComponent
           barColor={barColor}
           ref={REF_BAR}
+          width={this.state.width}
           size={barSize}>
           {this.renderIcons()}
         </BarComponent>

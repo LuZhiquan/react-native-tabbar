@@ -10,6 +10,10 @@ const glypy = glypyMapMaker({
 });
 
 export default class App extends Component {
+  onLayout = event => { 
+    console.log ("layout changed: " + event.nativeEvent.layout.width + "x" + event.nativeEvent.layout.height ); 
+  } 
+
   constructor(props, context) {
     super(props, context);
     this.toggle = false;
@@ -48,7 +52,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Tabbar ref="myTabbar" barColor={'gray'}>
+      <Tabbar ref="myTabbar" barColor={'gray'} onLayout={this.onLayout}>
         <Tab name="home">
           <IconWithBar label="Home" type={glypy.Home} from={'icomoon'}/>
           <RawContent>
